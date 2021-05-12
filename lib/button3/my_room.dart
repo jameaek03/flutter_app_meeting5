@@ -1,15 +1,17 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
-import 'file:///D:/flutter_app_meeting/lib/button3/create_room.dart';
 
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../screen/edit_room.dart';
+import 'create_room.dart';
+import 'edit_room.dart';
 
 class MyRoom extends StatefulWidget {
   @override
@@ -31,10 +33,12 @@ class _MyRoomState extends State<MyRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: createRoom(),
       appBar: AppBar(
-        title: Text('กิจกรรมของฉัน'),
+        title: Text('กิจกรรมของฉัน',style: GoogleFonts.sarabun(),),
         backgroundColor: Colors.deepOrange[400],
+        centerTitle: true,
       ),
       body: loadStatus ? MyStyle().showProgress() : showContent(),
     );
@@ -47,11 +51,11 @@ class _MyRoomState extends State<MyRoom> {
     }
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String User = preferences.getString('User');
-    print('User = $User');
+    String u_id = preferences.getString('id');
+    print('User = $u_id');
 
     String url =
-        '${MyDomain().domain}/Meeting/getRoomUser.php?isAdd=true&User=$User';
+        '${MyDomain().domain}/Meeting/getRoomUser.php?isAdd=true&u_id=$u_id';
     await Dio().get(url).then((value) {
       setState(() {
         loadStatus = false;
@@ -99,72 +103,101 @@ class _MyRoomState extends State<MyRoom> {
     return status
         ? showListRoom()
         : Center(
-            child: Text('ยังไม่มีรายการ'),
+            child: Text('ยังไม่มีรายการ',style: GoogleFonts.sarabun(),),
           );
   }
 
   //เอาข้อมูลมาแสดง
   Widget showListRoom() => ListView.builder(
         itemCount: roomModels.length,
-        itemBuilder: (context, index) => Card(
-          margin: EdgeInsets.only(bottom: 12, right: 20, left: 20, top: 20),
-          child: Row(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(bottom: 6, right: 10, left: 10),
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.width * 0.4,
-                child: Image.network(
-                  '${MyDomain().domain}${roomModels[index].rImg}',
+        itemBuilder: (context, index) => ClipRRect(
+          //borderRadius: BorderRadius.circular(20.0),
+          child: Card(
+            margin: EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 10),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 8,
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  colors: [Colors.white, Colors.deepOrange[300],],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(20.0),
-                width: MediaQuery.of(context).size.width * 0.4,
-                height: MediaQuery.of(context).size.width * 0.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        roomModels[index].rName,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(height: 20,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.indigo[700],
-                            ),
-                            onPressed: () {
-                              MaterialPageRoute route = MaterialPageRoute(
-                                //passModel ไปที่หน้าแก้ไข
-                                builder: (context) => EditRoom(
-                                  roomModel: roomModels[index],
-                                ),
-                              );
-                              Navigator.push(context, route)
-                                  .then((value) => EditRoom());
-                            },
-                          ),
-                          SizedBox(width: 20,),
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () => deleteRoom(roomModels[index]),
-                          ),
-                        ],
-                      )
-                    ],
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.width * 0.4,
+                    child: Image.network(
+                      '${MyDomain().domain}${roomModels[index].rImg}',
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
+                  Container(
+                    padding: EdgeInsets.all(20.0),
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            roomModels[index].rName,
+                            style:
+                            GoogleFonts.sarabun(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.indigo[700],
+                              ),
+                              onPressed: () {
+                                MaterialPageRoute route = MaterialPageRoute(
+                                  //passModel ไปที่หน้าแก้ไข
+                                  builder: (context) => EditRoom(
+                                    roomModel: roomModels[index],
+                                  ),
+                                );
+                                Navigator.push(context, route)
+                                    .then((value) => EditRoom());
+                              },
+                            ),
+                            Text('แก้ไข',style: GoogleFonts.sarabun(),),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              onPressed: () => deleteRoom(roomModels[index]),
+                            ),
+                            Text('ลบกิจกรรม',style: GoogleFonts.sarabun(),),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       );
@@ -173,24 +206,23 @@ class _MyRoomState extends State<MyRoom> {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: MyStyle().showTitle('คุณต้องการลบกิจกรรม ${roomModel.rName} ?'),
+        title: MyStyle().showTitle('คุณต้องการลบกิจกรรม ${roomModel.rName} ?'),titleTextStyle: GoogleFonts.sarabun(),
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               FlatButton(
                 onPressed: () async {
-                  Navigator.pop(context);
                   String url =
-
                       '${MyDomain().domain}/Meeting/deleteRoomWhereId.php?isAdd=true&r_id=${roomModel.rId}';
                   await Dio().get(url).then((value) => readRoom());
+                  Navigator.pop(context);
                 },
-                child: Text('ยืนยัน'),
+                child: Text('ยืนยัน',style: GoogleFonts.sarabun(),),
               ),
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('ยกเลิก'),
+                child: Text('ยกเลิก',style: GoogleFonts.sarabun(),),
               ),
             ],
           ),

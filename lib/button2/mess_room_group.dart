@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/button1/show_mess.dart';
+import 'package:flutter_app_meeting/button2/show_mess_group.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
@@ -11,20 +13,20 @@ import 'package:flutter_app_meeting/utility/normal_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MessRoom extends StatefulWidget {
-  final RoomModel roomModel;
+class MessRoomGroup extends StatefulWidget {
+  final GroupModel groupModel;
 
-  MessRoom({Key key, this.roomModel}) : super(key: key);
+  MessRoomGroup({Key key, this.groupModel}) : super(key: key);
 
   @override
-  _MessRoomState createState() => _MessRoomState();
+  _MessRoomGroupState createState() => _MessRoomGroupState();
 }
 
-class _MessRoomState extends State<MessRoom> {
-  RoomModel roomModel;
+class _MessRoomGroupState extends State<MessRoomGroup> {
+  GroupModel groupModel;
   String r_name, m_mess, r_id;
 
-  List<RoomModel> roomModels = List();
+  List<GroupModel> groupModels = List();
 
   List<Widget> roomCards = List();
 
@@ -32,9 +34,9 @@ class _MessRoomState extends State<MessRoom> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    roomModel = widget.roomModel;
-    r_name = roomModel.rName;
-    r_id = roomModel.rId;
+    groupModel = widget.groupModel;
+    r_name = groupModel.rName;
+    r_id = groupModel.rId;
   }
 
   @override
@@ -43,7 +45,7 @@ class _MessRoomState extends State<MessRoom> {
       backgroundColor: Colors.white,
       floatingActionButton: roomMessage(),
       appBar: AppBar(
-        title: Text('แชท ${roomModel.rName}',style: GoogleFonts.sarabun()),
+        title: Text('แชท ${groupModel.rName}',style: GoogleFonts.sarabun()),
         backgroundColor: Colors.deepOrange[400],
         centerTitle: true,
       ),
@@ -59,7 +61,7 @@ class _MessRoomState extends State<MessRoom> {
                 width: 400.0,
                 height: 280.0,
                 child: Image.network(
-                  '${MyDomain().domain}${roomModel.rImg}',
+                  '${MyDomain().domain}${groupModel.rImg}',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -142,7 +144,7 @@ FloatingActionButton roomMessage() {
   return FloatingActionButton(
     onPressed: () {
       MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => ShowMess(roomModel: roomModel,),
+        builder: (context) => ShowMessGroup(groupModel: groupModel,),
       );
       Navigator.push(context, route);
     },

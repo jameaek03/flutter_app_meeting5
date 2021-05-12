@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
 import 'package:flutter_app_meeting/utility/normal_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,8 +24,9 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SignUp'),
+        title: Text('SignUp',style: GoogleFonts.mcLaren(),),
         backgroundColor: Colors.deepOrange[400],
+        centerTitle: true,
       ),
       body: ListView(
         padding: EdgeInsets.all(30.0),
@@ -146,7 +147,7 @@ class _SignUpState extends State<SignUp> {
               uploadInsertData();
             }
           },
-          child: Text('Register',style: TextStyle(fontSize: 18,color: Colors.white,),
+          child: Text('Register',style: GoogleFonts.mcLaren(fontSize: 18,color: Colors.white,),
           ),
         ),
       );
@@ -163,7 +164,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.face,
                   color: MyStyle().darColor,
                 ),
-                labelStyle: TextStyle(color: MyStyle().darColor),
+                labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),
                 labelText: 'name :',
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().darColor)),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().primaryColor)),
@@ -185,7 +186,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.account_box,
                   color: MyStyle().darColor,
                 ),
-                labelStyle: TextStyle(color: MyStyle().darColor),
+                labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),
                 labelText: 'user :',
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().darColor)),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().primaryColor)),
@@ -208,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.lock,
                   color: MyStyle().darColor,
                 ),
-                labelStyle: TextStyle(color: MyStyle().darColor),
+                labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),
                 labelText: 'Password :',
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().darColor)),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().primaryColor)),
@@ -230,7 +231,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.home,
                   color: MyStyle().darColor,
                 ),
-                labelStyle: TextStyle(color: MyStyle().darColor),
+                labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),
                 labelText: 'Address :',
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().darColor)),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().primaryColor)),
@@ -252,7 +253,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.phone,
                   color: MyStyle().darColor,
                 ),
-                labelStyle: TextStyle(color: MyStyle().darColor),
+                labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),
                 labelText: 'Phone :',
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().darColor)),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyStyle().primaryColor)),

@@ -5,6 +5,7 @@ import 'package:flutter_app_meeting/model/room_model.dart';
 
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/signout_process.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -48,10 +49,10 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       floatingActionButton: createRoom(),
       appBar: AppBar(
-        title: Text('ข้อมูลส่วนตัว',),
+        title: Text('ข้อมูลส่วนตัว',style: GoogleFonts.sarabun(),),
         backgroundColor: Colors.deepOrange[400],
         centerTitle: true,
         actions: <Widget>[
@@ -89,13 +90,13 @@ class _ProfileState extends State<Profile> {
                           children: <Widget>[
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                               child: Column(
                                 children: <Widget>[
                                   ListTile(
-                                    title: Text("User information",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                                    title: Text("User information",style: GoogleFonts.mcLaren(fontSize: 20,fontWeight: FontWeight.bold,),),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -103,9 +104,9 @@ class _ProfileState extends State<Profile> {
                                     indent: 20,
                                   ),
                                   ListTile(
-                                    title: Text("Name",style: TextStyle(fontWeight: FontWeight.bold),),
-                                    subtitle: Text("$nameUser"),
-                                    leading: Icon(Icons.person),
+                                    title: Text("Name",style: GoogleFonts.mcLaren(fontWeight: FontWeight.bold),),
+                                    subtitle: Text("$nameUser",style: GoogleFonts.sarabun(),),
+                                    leading: Icon(Icons.person,color: Colors.black,),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -113,9 +114,9 @@ class _ProfileState extends State<Profile> {
                                     indent: 20,
                                   ),
                                   ListTile(
-                                    title: Text("Phone",style: TextStyle(fontWeight: FontWeight.bold),),
-                                    subtitle: Text("$PhoneUser"),
-                                    leading: Icon(Icons.phone),
+                                    title: Text("Phone",style: GoogleFonts.mcLaren(fontWeight: FontWeight.bold),),
+                                    subtitle: Text("$PhoneUser",style: GoogleFonts.sarabun(),),
+                                    leading: Icon(Icons.phone,color: Colors.black),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -123,19 +124,9 @@ class _ProfileState extends State<Profile> {
                                     indent: 20,
                                   ),
                                   ListTile(
-                                    title: Text("Email",style: TextStyle(fontWeight: FontWeight.bold),),
-                                    subtitle: Text("butterfly.little@gmail.com"),
-                                    leading: Icon(Icons.email),
-                                  ),
-                                  Divider(
-                                    color: Colors.grey.shade600,
-                                    endIndent: 20,
-                                    indent: 20,
-                                  ),
-                                  ListTile(
-                                    title: Text("อาศัยอยู่ที่",style: TextStyle(fontWeight: FontWeight.bold),),
-                                    subtitle: Text("$addressUser"),
-                                    leading: Icon(Icons.home),
+                                    title: Text("อาศัยอยู่ที่",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
+                                    subtitle: Text("$addressUser",style: GoogleFonts.sarabun(),),
+                                    leading: Icon(Icons.home,color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -173,7 +164,7 @@ class _ProfileState extends State<Profile> {
         Icons.library_books_outlined,
         color: Colors.white,
       ),
-      backgroundColor: Colors.deepOrange[400  ],
+      backgroundColor: Colors.deepOrange[400],
     );
   }
 

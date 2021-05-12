@@ -1,21 +1,21 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_meeting/button1/room_detail.dart';
-import 'package:flutter_app_meeting/model/room_model.dart';
+import 'package:flutter_app_meeting/button2/group_all.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ListRoom extends StatefulWidget {
+class GroupRoom extends StatefulWidget {
   @override
-  _ListRoomState createState() => _ListRoomState();
+  _GroupRoomState createState() => _GroupRoomState();
 }
 
-class _ListRoomState extends State<ListRoom> {
-  String r_id;
+class _GroupRoomState extends State<GroupRoom> {
+  String g_id;
 
-  List<RoomModel> roomModels = List();
+  List<GroupModel> groupModels = List();
   List<Widget> roomCards = List();
 
   @override
@@ -32,13 +32,12 @@ class _ListRoomState extends State<ListRoom> {
         : Scaffold(
             appBar: AppBar(
                 title: Text(
-                  'Find Meeting',
-                    style: GoogleFonts.mcLaren(),
+                  'หมวดหมู่',style: GoogleFonts.sarabun(),
                 ),
               centerTitle: true,
               backgroundColor: Colors.deepOrange[400],
             ),
-      backgroundColor: Colors.white,
+            backgroundColor: Colors.white,
             body: GridView.extent(
               maxCrossAxisExtent: 200.0,
               mainAxisSpacing: 10.0,
@@ -50,7 +49,7 @@ class _ListRoomState extends State<ListRoom> {
 
   //api เรียกดึงข้อูล room จากตาราง room_tb where id
   Future<Null> readRoom() async {
-    String url = '${MyDomain().domain}/Meeting/getRoomWhereIdUser.php?isAdd=true&r_id=$r_id';
+    String url = '${MyDomain().domain}/Meeting/getMroom.php?isAdd=true';
     await Dio().get(url).then((value) {
       //print('value = $value');
       //คลายรหัส utf8 เก็บใน result
@@ -58,14 +57,13 @@ class _ListRoomState extends State<ListRoom> {
 
       int index = 0;
       for (var map in result) {
-        RoomModel model = RoomModel.fromJson(map);
+        GroupModel model = GroupModel.fromJson(map);
         // print('NameShop = ${model.nameShop}');
 
-        String rName = model.rName;
-        if (rName.isNotEmpty) {
-          print('rName = ${model.rName}');
+        String gName = model.gName;
+        if (gName.isNotEmpty) {
           setState(() {
-            roomModels.add(model);
+            groupModels.add(model);
             roomCards.add(createCard(model, index));
             index++;
           });
@@ -75,14 +73,12 @@ class _ListRoomState extends State<ListRoom> {
   }
 
   //card
-  Widget createCard(RoomModel roomModel, int index) {
+  Widget createCard(GroupModel groupModel, int index) {
     return GestureDetector(
       onTap: () {
         print('you click index $index');
         MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => RoomDetail(
-            roomModel: roomModels[index],
-          ),
+          builder: (context) => GroupAll( groupModel: groupModels[index],),
         );
         Navigator.push(context, route);
       },
@@ -100,7 +96,7 @@ class _ListRoomState extends State<ListRoom> {
                     width: MediaQuery.of(context).size.width,
                     height: 150.0,
                     child: Image.network(
-                      '${MyDomain().domain}${roomModel.rImg}',
+                      '${MyDomain().domain}${groupModel.gImg}',
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -118,8 +114,8 @@ class _ListRoomState extends State<ListRoom> {
                   right: 10,
                 ),
                 child: Row(
-                  children: <Widget>[
-                    MyStyle().showTitle(roomModel.rName),
+                  children: [
+                    MyStyle().showTitle(groupModel.gName,),
                   ],
                 ),
               ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/button1/list_room.dart';
+import 'package:flutter_app_meeting/button2/list_group.dart';
 import 'package:flutter_app_meeting/button3/profile.dart';
-import 'package:flutter_app_meeting/screen/top_ui.dart';
+import 'package:flutter_app_meeting/button4/follow_room.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -17,8 +19,9 @@ class _HomeState extends State<Home> {
 
   //pages
   ListRoom listRoom;
-  Top top;
+  GroupRoom groupRoom;
   Profile profile;
+  FollowRoom followRoom;
 
   List<Widget> pages;
 
@@ -28,15 +31,18 @@ class _HomeState extends State<Home> {
       super.initState();
 
     listRoom = ListRoom();
-    top = Top();
+    groupRoom = GroupRoom();
     profile = Profile();
+    followRoom = FollowRoom();
 
     pages = [
       listRoom,
-      top,
+      groupRoom,
       profile,
+      followRoom,
     ];
     currentPage = listRoom;
+
   }
 
   void routeToService(Widget myWidget) {
@@ -63,13 +69,13 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.thLarge), title: Text("หมวดหมู่")),
+              icon: FaIcon(FontAwesomeIcons.home), title: Text("หน้าแรก",style: GoogleFonts.sarabun(),)),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.bell), title: Text("แจ้งเตือน")),
-//          BottomNavigationBarItem(
-//              icon: FaIcon(FontAwesomeIcons.edit), title: Text("รายงาน")),
+              icon: FaIcon(FontAwesomeIcons.thLarge), title: Text("หมวดหมู่",style: GoogleFonts.sarabun(),)),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.idBadge), title: Text("โปรไฟล์")),
+              icon: FaIcon(FontAwesomeIcons.idBadge), title: Text("โปรไฟล์",style: GoogleFonts.sarabun(),)),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.heart), title: Text("ติดตาม",style: GoogleFonts.sarabun(),)),
         ],
       ),
     );

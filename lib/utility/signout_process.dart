@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //ออกจากโปรแกรม
 Future<Null> signOutProcess(BuildContext context) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  preferences.clear(); //เคลียค่าของ SharedPreferences ออกไปทั้งหมด
   //exit(0); ออกจากโปรแกรมเลย
   //สลายสเตทเดิมกับมาหาหน้า home
   MaterialPageRoute route = MaterialPageRoute(

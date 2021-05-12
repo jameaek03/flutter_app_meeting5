@@ -1,30 +1,26 @@
 import 'dart:async';
 
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_meeting/button1/mess_room.dart';
-import 'package:flutter_app_meeting/button1/report.dart';
-import 'package:flutter_app_meeting/model/room_model.dart';
+import 'package:flutter_app_meeting/button2/mess_room_group.dart';
+import 'package:flutter_app_meeting/button2/report_group.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class RoomDetail extends StatefulWidget {
-  //รับค่าจาก ListRoom
-  final RoomModel roomModel;
+class GroupDetail extends StatefulWidget {
+  final GroupModel groupModel;
 
-  RoomDetail({Key key, this.roomModel}) : super(key: key);
-
-  final index =0;
+  GroupDetail({Key key, this.groupModel}) : super(key: key);
 
   @override
-  _RoomDetailState createState() => _RoomDetailState();
+  _GroupDetailState createState() => _GroupDetailState();
 }
 
-class _RoomDetailState extends State<RoomDetail> {
+class _GroupDetailState extends State<GroupDetail> {
   Completer<GoogleMapController> _controller = Completer();
 
-  RoomModel roomModel;
+  GroupModel groupModel;
   List<Widget> listWidgets = List();
   int indexPage = 0;
 
@@ -35,26 +31,27 @@ class _RoomDetailState extends State<RoomDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    roomModel = widget.roomModel;
+    groupModel = widget.groupModel;
     findLatLng();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: roomMessage(),
       appBar: AppBar(
-        title: Text('${roomModel.rName}',style: GoogleFonts.sarabun(),),
         centerTitle: true,
+        title: Text('${groupModel.rName}',style: GoogleFonts.sarabun(),),
         backgroundColor: Colors.deepOrange[400],
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.assignment_late_outlined),
             onPressed: () {
               MaterialPageRoute route = MaterialPageRoute(
-                builder: (context) => Report(
-                  roomModel: roomModel,
+                builder: (context) => ReportGroup(
+                  groupModel: groupModel,
                 ),
               );
               Navigator.push(context, route);
@@ -73,7 +70,7 @@ class _RoomDetailState extends State<RoomDetail> {
                   width: MediaQuery.of(context).size.width,
                   height: 200.0,
                   child: Image.network(
-                    '${MyDomain().domain}${roomModel.rImg}',
+                    '${MyDomain().domain}${groupModel.rImg}',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -108,7 +105,7 @@ class _RoomDetailState extends State<RoomDetail> {
                                 children: <Widget>[
                                   ListTile(
                                     title: Text("รายละเอียดกิจกรรม",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.rDetail}',style: GoogleFonts.sarabun(),),
+                                    subtitle: Text('${groupModel.rDetail}',style: GoogleFonts.sarabun(),),
                                     leading: Icon(Icons.article_rounded,color: Colors.black),
                                   ),
                                   Divider(
@@ -118,7 +115,7 @@ class _RoomDetailState extends State<RoomDetail> {
                                   ),
                                   ListTile(
                                     title: Text("วันที่",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.day}',style: GoogleFonts.sarabun(),),
+                                    subtitle: Text('${groupModel.day}',style: GoogleFonts.sarabun()),
                                     leading: Icon(Icons.today,color: Colors.black),
                                   ),
                                   Divider(
@@ -128,7 +125,7 @@ class _RoomDetailState extends State<RoomDetail> {
                                   ),
                                   ListTile(
                                     title: Text("เวลา",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.time}',style: GoogleFonts.sarabun(),),
+                                    subtitle: Text('${groupModel.time}',style: GoogleFonts.sarabun()),
                                     leading: Icon(Icons.timer,color: Colors.black,),
                                   ),
                                   Divider(
@@ -146,43 +143,12 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                 ],
               ),
-              //SizedBox(height: 12,),
-              favorite(),
-              //saveButton(),
-
+              SizedBox(height: 12,),
+              saveButton(),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget favorite() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          child: RaisedButton(
-            onPressed: () => null,
-            color: Colors.green,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.touch_app),
-                  Text('ติดตาม',style: GoogleFonts.sarabun(),),
-                ],
-              ), //Row
-            ), //Padding
-          ), //RaisedButton
-        ),
-        FavoriteButton(
-          isFavorite: false,
-          valueChanged: (_isFavorite) {
-            print('Is Favorite : $_isFavorite');
-          },
-        ),
-      ],
     );
   }
 
@@ -191,24 +157,22 @@ class _RoomDetailState extends State<RoomDetail> {
       color: Colors.green,
       width: 200,
       child: RaisedButton.icon(
-        onPressed: () => null,
         icon: Icon(
-          Icons.favorite_sharp,
+          Icons.where_to_vote,
           color: Colors.white,
         ),
         label: Text(
-          'ติดตาม',
+          'เข้าร่วม',
           style: GoogleFonts.sarabun(color: Colors.white),
         ),
       ),
-
     );
   }
 
   Future<Null> findLatLng() async {
     setState(() {
-      lat = double.parse(roomModel.lat);
-      lng = double.parse(roomModel.lng);
+      lat = double.parse(groupModel.lat);
+      lng = double.parse(groupModel.lng);
     });
   }
 
@@ -223,35 +187,35 @@ class _RoomDetailState extends State<RoomDetail> {
           lng,
         ),
         infoWindow: InfoWindow(
-          title: '${roomModel.rName}',
+          title: '${groupModel.rName}',
         ),
       ),
     ].toSet();
   }
 
   Widget roomMap() => Container(
-        width: 300,
-        height: 300,
-        child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(lat, lng),
-            zoom: 15,
-          ),
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          myLocationEnabled: false,
-          myLocationButtonEnabled: true,
-          markers: myMarker(),
-        ),
-      );
+    width: 300,
+    height: 300,
+    child: GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(lat, lng),
+        zoom: 15,
+      ),
+      mapType: MapType.normal,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
+      myLocationEnabled: false,
+      myLocationButtonEnabled: true,
+      markers: myMarker(),
+    ),
+  );
 
   FloatingActionButton roomMessage() {
     return FloatingActionButton(
       onPressed: () {
         MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => MessRoom(roomModel: roomModel,),
+          builder: (context) => MessRoomGroup(groupModel: groupModel,),
         );
         Navigator.push(context, route);
       },
@@ -262,5 +226,6 @@ class _RoomDetailState extends State<RoomDetail> {
       backgroundColor: Colors.deepOrange[400],
     );
   }
+
 
 }

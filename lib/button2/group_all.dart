@@ -1,44 +1,55 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_meeting/button1/room_detail.dart';
-import 'package:flutter_app_meeting/model/room_model.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class ListRoom extends StatefulWidget {
+import 'group_detail.dart';
+
+class GroupAll extends StatefulWidget {
+  //รับค่าจาก ListRoom
+  final GroupModel groupModel;
+
+  GroupAll({Key key, this.groupModel}) : super(key: key);
+
   @override
-  _ListRoomState createState() => _ListRoomState();
+  _GroupAllState createState() => _GroupAllState();
 }
 
-class _ListRoomState extends State<ListRoom> {
-  String r_id;
-
-  List<RoomModel> roomModels = List();
+class _GroupAllState extends State<GroupAll> {
+  GroupModel groupModel;
+  List<Widget> listWidgets = List();
+  int indexPage = 0;
+  List<GroupModel> groupModels = List();
   List<Widget> roomCards = List();
+
+  String gId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    groupModel = widget.groupModel;
+    gId = groupModel.gId;
     readRoom();
   }
 
   @override
   Widget build(BuildContext context) {
+    //print('กลุ่ม${groupModel.gName}');
     return roomCards.length == 0
         ? MyStyle().showProgress()
         : Scaffold(
             appBar: AppBar(
-                title: Text(
-                  'Find Meeting',
-                    style: GoogleFonts.mcLaren(),
-                ),
-              centerTitle: true,
+              title: Text('หมวดหมู่ ${groupModel.gName}',style: GoogleFonts.sarabun(),),
               backgroundColor: Colors.deepOrange[400],
+              centerTitle: true,
             ),
-      backgroundColor: Colors.white,
+            backgroundColor: Colors.white,
             body: GridView.extent(
               maxCrossAxisExtent: 200.0,
               mainAxisSpacing: 10.0,
@@ -50,7 +61,9 @@ class _ListRoomState extends State<ListRoom> {
 
   //api เรียกดึงข้อูล room จากตาราง room_tb where id
   Future<Null> readRoom() async {
-    String url = '${MyDomain().domain}/Meeting/getRoomWhereIdUser.php?isAdd=true&r_id=$r_id';
+    String g_id = gId;
+
+    String url = '${MyDomain().domain}/Meeting/getMroomList.php?isAdd=true&g_id=$g_id';
     await Dio().get(url).then((value) {
       //print('value = $value');
       //คลายรหัส utf8 เก็บใน result
@@ -58,14 +71,13 @@ class _ListRoomState extends State<ListRoom> {
 
       int index = 0;
       for (var map in result) {
-        RoomModel model = RoomModel.fromJson(map);
+        GroupModel model = GroupModel.fromJson(map);
         // print('NameShop = ${model.nameShop}');
 
-        String rName = model.rName;
-        if (rName.isNotEmpty) {
-          print('rName = ${model.rName}');
+        String gName = model.gName;
+        if (gName.isNotEmpty) {
           setState(() {
-            roomModels.add(model);
+            groupModels.add(model);
             roomCards.add(createCard(model, index));
             index++;
           });
@@ -75,14 +87,12 @@ class _ListRoomState extends State<ListRoom> {
   }
 
   //card
-  Widget createCard(RoomModel roomModel, int index) {
+  Widget createCard(GroupModel groupModel, int index) {
     return GestureDetector(
       onTap: () {
         print('you click index $index');
         MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => RoomDetail(
-            roomModel: roomModels[index],
-          ),
+          builder: (context) => GroupDetail(groupModel: groupModels[index],),
         );
         Navigator.push(context, route);
       },
@@ -100,7 +110,7 @@ class _ListRoomState extends State<ListRoom> {
                     width: MediaQuery.of(context).size.width,
                     height: 150.0,
                     child: Image.network(
-                      '${MyDomain().domain}${roomModel.rImg}',
+                      '${MyDomain().domain}${groupModel.rImg}',
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -118,8 +128,8 @@ class _ListRoomState extends State<ListRoom> {
                   right: 10,
                 ),
                 child: Row(
-                  children: <Widget>[
-                    MyStyle().showTitle(roomModel.rName),
+                  children: [
+                    MyStyle().showTitle(groupModel.rName),
                   ],
                 ),
               ),

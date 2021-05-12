@@ -8,6 +8,7 @@ import 'package:flutter_app_meeting/screen/home.dart';
 import 'package:flutter_app_meeting/screen/singup.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/normal_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
@@ -41,9 +42,9 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('Find Meeting',style: TextStyle(fontSize: 50,color: Colors.white,),),
+                Text('Find Meeting',style: GoogleFonts.mcLaren(fontSize: 50,color: Colors.white,),),
                 SizedBox(height: 16.0,),
-                Text('Happy Moment',style: TextStyle(fontSize: 30,color: Colors.deepOrange,),),
+                Text('Happy Moment',style: GoogleFonts.mcLaren(fontSize: 30,color: Colors.deepOrange,),),
                 SizedBox(height: 80.0,),
                 userForm(),
                 SizedBox(height: 16.0,),
@@ -70,7 +71,7 @@ class _SignInState extends State<SignIn> {
     Navigator.pushAndRemoveUntil(context, route, (route) => false);
   }
 
-  //เช็คสถานะว่าไปหน้าไหน
+  //เช็คสถานะว่าไปหน้าไหน ไม่ต้องล้อคอินใหม่ ถ้า ID มีค่าจะเรียกไปที่หน้า Home เลย
   Future<Null> checkPreferance() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -97,7 +98,7 @@ class _SignInState extends State<SignIn> {
 
       for (var map in result) {
         UserModel userModel = UserModel.fromJson(map);
-        //print('$map');
+        print('$map');
         if (password == userModel.password) {
           routeTuService(Home(), userModel);
         } else {
@@ -113,7 +114,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Future<Null> routeTuService(Widget myWidget, UserModel userModel) async {
-    //ฝั่งข้อมูลผู็ใช้
+    //การฝั่งข้อมูลของผู้ใช้ สามารถเรียกใช้ได้เลย
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('User', userModel.user);
     preferences.setString('id', userModel.uId);
@@ -141,7 +142,7 @@ class _SignInState extends State<SignIn> {
             );
             Navigator.push(context, route);
           },
-          child: Text('Register',style: TextStyle(fontSize: 18,color: Colors.deepOrange,),),
+          child: Text('Register',style: GoogleFonts.mcLaren(fontSize: 18,color: Colors.deepOrange,),),
         ),
       );
 
@@ -162,7 +163,7 @@ class _SignInState extends State<SignIn> {
               chackAuthen();
             }
           },
-          child: Text('Login',style: TextStyle(fontSize: 18,color: Colors.white,),),
+          child: Text('Login',style: GoogleFonts.mcLaren(fontSize: 18,color: Colors.white,),),
         ),
       );
 
@@ -170,7 +171,7 @@ class _SignInState extends State<SignIn> {
         width: 300.0,
         child: TextFormField(
           cursorColor: Colors.white,
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.mcLaren(color: Colors.white),
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) => user = value.trim(),
           decoration: InputDecoration(
@@ -178,7 +179,7 @@ class _SignInState extends State<SignIn> {
               Icons.account_box,
               color: Colors.white,
             ),
-            labelStyle: TextStyle(color: Colors.white,),
+            labelStyle: GoogleFonts.mcLaren(color: Colors.white,),
             labelText: 'User :',
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white,),borderRadius: BorderRadius.circular(32.0)),
             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white,),borderRadius: BorderRadius.circular(32.0)),
@@ -191,7 +192,7 @@ class _SignInState extends State<SignIn> {
         width: 300.0,
         child: TextFormField(
           cursorColor: Colors.white,
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.sarabun(color: Colors.white),
           onChanged: (value) => password = value.trim(),
           obscureText: showVisible,
           decoration: InputDecoration(
@@ -199,7 +200,7 @@ class _SignInState extends State<SignIn> {
               Icons.lock,
               color: Colors.white,
             ),
-            labelStyle: TextStyle(color: Colors.white,),
+            labelStyle: GoogleFonts.mcLaren(color: Colors.white,),
             labelText: 'Password :',
             suffixIcon: IconButton(
               onPressed: () {

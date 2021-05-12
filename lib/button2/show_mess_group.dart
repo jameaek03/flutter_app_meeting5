@@ -1,30 +1,28 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
-class ShowMess extends StatefulWidget {
-  final RoomModel roomModel;
+class ShowMessGroup extends StatefulWidget {
+  final GroupModel groupModel;
 
-  ShowMess({Key key, this.roomModel}) : super(key: key);
+  ShowMessGroup({Key key, this.groupModel}) : super(key: key);
 
   @override
-  _ShowMessState createState() => _ShowMessState();
+  _ShowMessGroupState createState() => _ShowMessGroupState();
 }
 
-class _ShowMessState extends State<ShowMess> {
-  RoomModel roomModel;
-  List<RoomModel> roomModels = List();
+class _ShowMessGroupState extends State<ShowMessGroup> {
+  GroupModel groupModel;
+  List<GroupModel> groupModels = List();
   List<Widget> roomCards = List();
   String rId;
-
 
   String nameUser,PhoneUser,urlPictrueUser,addressUser;
 
@@ -33,10 +31,10 @@ class _ShowMessState extends State<ShowMess> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    roomModel = widget.roomModel;
-    rId = roomModel.rId;
+    groupModel = widget.groupModel;
+    rId = groupModel.rId;
     readMess();
-    print(roomModel.rId.toString());
+    print(groupModel.rId.toString());
     findUser();
   }
 
@@ -45,7 +43,7 @@ class _ShowMessState extends State<ShowMess> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('${roomModel.rName}',style: GoogleFonts.sarabun()),
+        title: Text('${groupModel.rName}',style: GoogleFonts.sarabun()),
         backgroundColor: Colors.deepOrange[400],
         centerTitle: true,
       ),
@@ -82,23 +80,21 @@ class _ShowMessState extends State<ShowMess> {
 
     String r_id = rId;
 
-    String url = '${MyDomain().domain}/Meeting/messageGet.php?isAdd=true&r_id=$r_id';
+    String url = '${MyDomain().domain}/Meeting/messageGetMroom.php?isAdd=true&r_id=$r_id';
 
     print('data $r_id');
 
     await Dio().get(url).then((value) {
       var result = json.decode(value.data);
-
       print(result.toString());
-
       int index = 0;
       for (var map in result) {
-        RoomModel model = RoomModel.fromJson(map);
+        GroupModel model = GroupModel.fromJson(map);
 
         String rName = model.rName;
         if (rName.isNotEmpty) {
           setState(() {
-            roomModels.add(model);
+            groupModels.add(model);
             roomCards.add(createCard(model, index));
             index++;
           });
@@ -109,7 +105,7 @@ class _ShowMessState extends State<ShowMess> {
 
 
   //card
-  Widget createCard(RoomModel roomModel, int index) {
+  Widget createCard(GroupModel groupModel, int index) {
     return Card(
       elevation: 3,
       color: Colors.grey[200],
@@ -122,36 +118,19 @@ class _ShowMessState extends State<ShowMess> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
                 child: ListTile(
-                  title: Text('ผู้ใช้งาน ${roomModel.name}',style: GoogleFonts.sarabun(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),),
-                  subtitle: Text('${roomModel.datetime}',style: GoogleFonts.sarabun()),
-                  leading: CachedNetworkImage(
-                      imageUrl: '${MyDomain().domain}${urlPictrueUser}',
-                    imageBuilder: (context, imageProvider){
-                        return Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                            ),
-                          ),
-                        );
-                    },
-                  ),
-                  ),
+                  title: Text('ผู้ใช้งาน ${groupModel.name}',style: GoogleFonts.sarabun(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),),
+                  subtitle: Text('${groupModel.datetime}',style: GoogleFonts.sarabun()),
                 ),
               ),
             ),
+          ),
           SingleChildScrollView(
             child: ListTile(
-              title: Text('${roomModel.mMess}',style: GoogleFonts.sarabun(fontSize: 16,color: Colors.blueAccent.shade400),),
+              title: Text('${groupModel.mMess}',style: GoogleFonts.sarabun(fontSize: 16,color: Colors.blueAccent.shade400),),
+
               //mainAxisAlignment: MainAxisAlignment.start,
               //children: <Widget>[
-                //MyStyle().showTitle(roomModel.mMess),
+              //MyStyle().showTitle(roomModel.mMess),
               //],
             ),
           ),

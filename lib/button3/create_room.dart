@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
 import 'package:flutter_app_meeting/utility/normal_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateRoom extends StatefulWidget {
+
+
+
   @override
   _CreateRoomState createState() => _CreateRoomState();
 }
@@ -20,9 +24,10 @@ class CreateRoom extends StatefulWidget {
 class _CreateRoomState extends State<CreateRoom> {
 
   Completer<GoogleMapController> _controller = Completer();
-  String r_name, r_detail;
+  String r_name, r_detail, Day, Time;
   double Lat, Lng;
   File file;
+
 
   @override
   void initState() {
@@ -115,25 +120,35 @@ class _CreateRoomState extends State<CreateRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('สร้างห้องกิจกรรม'),
+        title: Text('สร้างห้องกิจกรรม',style: GoogleFonts.sarabun(),),
         backgroundColor: Colors.deepOrange[400],
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               groupImage(),
               SizedBox(
                 height: 20.0,
               ),
               nameForm(),
               SizedBox(
-                height: 20.0,
+                height: 14.0,
               ),
               detailForm(),
+              SizedBox(
+                height: 20.0,
+              ),
+              dayForm(),
+              SizedBox(
+                height: 20.0,
+              ),
+              timeForm(),
               SizedBox(
                 height: 20.0,
               ),
@@ -172,7 +187,7 @@ class _CreateRoomState extends State<CreateRoom> {
         ),
         label: Text(
           'บันทึกข้อมูล',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.sarabun(color: Colors.white),
         ),
       ),
     );
@@ -197,9 +212,9 @@ class _CreateRoomState extends State<CreateRoom> {
         print('urlPathImage = ${MyDomain().domain}$r_img');
 
         SharedPreferences preferences = await SharedPreferences.getInstance();
-        String User = preferences.getString('User');
+        String u_id = preferences.getString('id');
 
-        String urlInsertData = '${MyDomain().domain}/Meeting/addRoom.php?isAdd=true&User=$User&r_name=$r_name&r_img=$r_img&r_detail=$r_detail&Lat=$Lat&Lng=$Lng';
+        String urlInsertData = '${MyDomain().domain}/Meeting/addRoom.php?isAdd=true&u_id=$u_id&r_name=$r_name&r_img=$r_img&r_detail=$r_detail&Day=$Day&Time=$Time&Lat=$Lat&Lng=$Lng';
         await Dio().get(urlInsertData).then((value) => Navigator.pop(context));
 
 
@@ -235,8 +250,8 @@ class _CreateRoomState extends State<CreateRoom> {
           onPressed: () => choseImage(ImageSource.camera),
         ),
         Container(
-          width: 250.0,
-          height: 250.0,
+          width: 160.0,
+          height: 160.0,
           child: file == null ? Image.asset('assets/images/logoup.png') : Image.file(file),
         ),
         IconButton(
@@ -254,7 +269,7 @@ class _CreateRoomState extends State<CreateRoom> {
         onChanged: (value) => r_name = value.trim(),
         keyboardType: TextInputType.multiline,
         maxLines: 1,
-        decoration: InputDecoration(prefixIcon: Icon(Icons.library_books_outlined), labelText: 'ชื่อกิจกรรม :', border: OutlineInputBorder()),
+        decoration: InputDecoration(prefixIcon: Icon(Icons.library_books_outlined), labelText: 'ชื่อกิจกรรม :',labelStyle: GoogleFonts.sarabun(), border: OutlineInputBorder()),
       ));
 
   //ป้อนชื่อกิจกรรม
@@ -264,7 +279,25 @@ class _CreateRoomState extends State<CreateRoom> {
         onChanged: (value) => r_detail = value.trim(),
         keyboardType: TextInputType.multiline,
         maxLines: 10,
-        decoration: InputDecoration(prefixIcon: Icon(Icons.web_sharp), labelText: 'รายละเอียดกิจกรรม :', border: OutlineInputBorder()),
+        decoration: InputDecoration(prefixIcon: Icon(Icons.web_sharp), labelText: 'รายละเอียดกิจกรรม :',labelStyle: GoogleFonts.sarabun(), border: OutlineInputBorder()),
+      ));
+
+  Widget dayForm() => Container(
+      width: 250.0,
+      child: TextField(
+        onChanged: (value) => Day = value.trim(),
+        keyboardType: TextInputType.multiline,
+        maxLines: 1,
+        decoration: InputDecoration(prefixIcon: Icon(Icons.today), labelText: 'วันที่ :',labelStyle: GoogleFonts.sarabun(), border: OutlineInputBorder()),
+      ));
+
+  Widget timeForm() => Container(
+      width: 250.0,
+      child: TextField(
+        onChanged: (value) => Time = value.trim(),
+        keyboardType: TextInputType.multiline,
+        maxLines: 1,
+        decoration: InputDecoration(prefixIcon: Icon(Icons.timer), labelText: 'เวลา :',labelStyle: GoogleFonts.sarabun(), border: OutlineInputBorder()),
       ));
 
 }

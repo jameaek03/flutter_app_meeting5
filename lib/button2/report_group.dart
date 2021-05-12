@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_meeting/model/group_model.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/my_style.dart';
@@ -7,21 +8,21 @@ import 'package:flutter_app_meeting/utility/normal_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Report extends StatefulWidget {
-  final RoomModel roomModel;
+class ReportGroup extends StatefulWidget {
+  final GroupModel groupModel;
 
   //  รัยค่า
-  Report({Key key, this.roomModel}) : super(key: key);
+  ReportGroup({Key key, this.groupModel}) : super(key: key);
 
   @override
-  _ReportState createState() => _ReportState();
+  _ReportGroupState createState() => _ReportGroupState();
 }
 
-class _ReportState extends State<Report> {
+class _ReportGroupState extends State<ReportGroup> {
   //File file;
   String Detail, r_name;
 
-  RoomModel roomModel;
+  GroupModel groupModel;
   List<Widget> listWidgets = List();
   int indexPage = 0;
 
@@ -29,15 +30,15 @@ class _ReportState extends State<Report> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    roomModel = widget.roomModel;
-    r_name = roomModel.rName;
+    groupModel = widget.groupModel;
+    r_name = groupModel.rName;
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('รายงาน ${roomModel.rName}',style: GoogleFonts.sarabun(),),
+        title: Text('รายงาน ${groupModel.rName}',style: GoogleFonts.sarabun(),),
         backgroundColor: Colors.deepOrange[400],
         centerTitle: true,
       ),
@@ -79,7 +80,7 @@ class _ReportState extends State<Report> {
           color: Colors.white,
         ),
         label: Text(
-          'ส่ง ',
+          'ส่ง',
           style: GoogleFonts.sarabun(color: Colors.white),
         ),
       ),
@@ -111,8 +112,7 @@ class _ReportState extends State<Report> {
         maxLines: 10,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.details),
-            labelText: 'รายละเอียดปัญหา',
-            labelStyle: GoogleFonts.sarabun(),
+            labelText: 'รายละเอียดปัญหา',labelStyle: GoogleFonts.sarabun(),
             border: OutlineInputBorder()),
       ));
 }
