@@ -11,7 +11,7 @@ class ListRoom extends StatefulWidget {
   @override
   _ListRoomState createState() => _ListRoomState();
 }
-
+// พลาสโมเดล ส่ง index ไป
 class _ListRoomState extends State<ListRoom> {
   String r_id;
 
@@ -101,7 +101,7 @@ class _ListRoomState extends State<ListRoom> {
                     height: 150.0,
                     child: Image.network(
                       '${MyDomain().domain}${roomModel.rImg}',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_meeting/button1/list_room.dart';
 import 'package:flutter_app_meeting/button1/mess_room.dart';
 import 'package:flutter_app_meeting/button1/report.dart';
+import 'package:flutter_app_meeting/button2/list_group.dart';
+import 'package:flutter_app_meeting/button3/profile.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +18,7 @@ class RoomDetail extends StatefulWidget {
 
   RoomDetail({Key key, this.roomModel}) : super(key: key);
 
-  final index =0;
+  final index = 0;
 
   @override
   _RoomDetailState createState() => _RoomDetailState();
@@ -28,8 +31,13 @@ class _RoomDetailState extends State<RoomDetail> {
   List<Widget> listWidgets = List();
   int indexPage = 0;
 
-
   double lat, lng;
+
+  //-----------------------------------
+
+
+
+
 
   @override
   void initState() {
@@ -37,6 +45,7 @@ class _RoomDetailState extends State<RoomDetail> {
     super.initState();
     roomModel = widget.roomModel;
     findLatLng();
+
   }
 
   @override
@@ -45,7 +54,10 @@ class _RoomDetailState extends State<RoomDetail> {
       backgroundColor: Colors.white,
       floatingActionButton: roomMessage(),
       appBar: AppBar(
-        title: Text('${roomModel.rName}',style: GoogleFonts.sarabun(),),
+        title: Text(
+          '${roomModel.rName}',
+          style: GoogleFonts.sarabun(),
+        ),
         centerTitle: true,
         backgroundColor: Colors.deepOrange[400],
         actions: <Widget>[
@@ -82,10 +94,16 @@ class _RoomDetailState extends State<RoomDetail> {
                 height: 20,
               ),
               ListTile(
-                title: Text("สถานที่จัดกิจกรรม",style: GoogleFonts.sarabun(fontSize: 18,fontWeight: FontWeight.bold),),
+                title: Text(
+                  "สถานที่จัดกิจกรรม",
+                  style: GoogleFonts.sarabun(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
               roomMap(),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Divider(
                 color: Colors.grey.shade600,
                 endIndent: 20,
@@ -94,7 +112,7 @@ class _RoomDetailState extends State<RoomDetail> {
               Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(16.0,30.0,16.0,16.0),
+                    margin: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 16.0),
                     child: Column(
                       children: <Widget>[
                         Stack(
@@ -107,9 +125,17 @@ class _RoomDetailState extends State<RoomDetail> {
                               child: Column(
                                 children: <Widget>[
                                   ListTile(
-                                    title: Text("รายละเอียดกิจกรรม",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.rDetail}',style: GoogleFonts.sarabun(),),
-                                    leading: Icon(Icons.article_rounded,color: Colors.black),
+                                    title: Text(
+                                      "รายละเอียดกิจกรรม",
+                                      style: GoogleFonts.sarabun(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      '${roomModel.rDetail}',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                    leading: Icon(Icons.article_rounded,
+                                        color: Colors.black),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -117,9 +143,17 @@ class _RoomDetailState extends State<RoomDetail> {
                                     indent: 20,
                                   ),
                                   ListTile(
-                                    title: Text("วันที่",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.day}',style: GoogleFonts.sarabun(),),
-                                    leading: Icon(Icons.today,color: Colors.black),
+                                    title: Text(
+                                      "วันที่",
+                                      style: GoogleFonts.sarabun(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      '${roomModel.day}',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                    leading:
+                                        Icon(Icons.today, color: Colors.black),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -127,9 +161,19 @@ class _RoomDetailState extends State<RoomDetail> {
                                     indent: 20,
                                   ),
                                   ListTile(
-                                    title: Text("เวลา",style: GoogleFonts.sarabun(fontWeight: FontWeight.bold),),
-                                    subtitle: Text('${roomModel.time}',style: GoogleFonts.sarabun(),),
-                                    leading: Icon(Icons.timer,color: Colors.black,),
+                                    title: Text(
+                                      "เวลา",
+                                      style: GoogleFonts.sarabun(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      '${roomModel.time}',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                    leading: Icon(
+                                      Icons.timer,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   Divider(
                                     color: Colors.grey.shade600,
@@ -146,9 +190,6 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                 ],
               ),
-              //SizedBox(height: 12,),
-              favorite(),
-              //saveButton(),
 
             ],
           ),
@@ -157,57 +198,12 @@ class _RoomDetailState extends State<RoomDetail> {
     );
   }
 
-  Widget favorite() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          child: RaisedButton(
-            onPressed: () => null,
-            color: Colors.green,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.touch_app),
-                  Text('ติดตาม',style: GoogleFonts.sarabun(),),
-                ],
-              ), //Row
-            ), //Padding
-          ), //RaisedButton
-        ),
-        FavoriteButton(
-          isFavorite: false,
-          valueChanged: (_isFavorite) {
-            print('Is Favorite : $_isFavorite');
-          },
-        ),
-      ],
-    );
-  }
 
-  Widget saveButton() {
-    return Container(
-      color: Colors.green,
-      width: 200,
-      child: RaisedButton.icon(
-        onPressed: () => null,
-        icon: Icon(
-          Icons.favorite_sharp,
-          color: Colors.white,
-        ),
-        label: Text(
-          'ติดตาม',
-          style: GoogleFonts.sarabun(color: Colors.white),
-        ),
-      ),
-
-    );
-  }
+//--------แผนที่----------//
 
   Future<Null> findLatLng() async {
     setState(() {
-      lat = double.parse(roomModel.lat);
+      lat = double.parse(roomModel.lat); //คอนเวิสค่า = แปรงค่า
       lng = double.parse(roomModel.lng);
     });
   }
@@ -246,12 +242,15 @@ class _RoomDetailState extends State<RoomDetail> {
           markers: myMarker(),
         ),
       );
+  //--------แผนที่----------//
 
   FloatingActionButton roomMessage() {
     return FloatingActionButton(
       onPressed: () {
         MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => MessRoom(roomModel: roomModel,),
+          builder: (context) => MessRoom(
+            roomModel: roomModel,
+          ),
         );
         Navigator.push(context, route);
       },
@@ -262,5 +261,4 @@ class _RoomDetailState extends State<RoomDetail> {
       backgroundColor: Colors.deepOrange[400],
     );
   }
-
 }

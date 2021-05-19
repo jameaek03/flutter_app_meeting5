@@ -18,7 +18,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   String user, password, uId;
-  bool showVisible = true;
+  bool showVisible = true; // Icon รูปคา
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class _SignInState extends State<SignIn> {
     } catch (e) {}
   }
 
-
+//await คือการีอค่า / json.decode คายรหัส utf8
   Future<Null> chackAuthen() async {
     String url = '${MyDomain().domain}/Meeting/getUser.php?isAdd=true&User=$user';
     try {
@@ -114,7 +114,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Future<Null> routeTuService(Widget myWidget, UserModel userModel) async {
-    //การฝั่งข้อมูลของผู้ใช้ สามารถเรียกใช้ได้เลย
+    //การฝั่งข้อมูลของผู้ใช้ สามารถเรียกใช้ได้เลย เรียกใช้หน้า profile
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('User', userModel.user);
     preferences.setString('id', userModel.uId);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _ShowMessGroupState extends State<ShowMessGroup> {
     rId = groupModel.rId;
     readMess();
     print(groupModel.rId.toString());
-    findUser();
+    //findUser();
   }
 
   @override
@@ -57,23 +58,23 @@ class _ShowMessGroupState extends State<ShowMessGroup> {
     );
   }
 
-  Future<Null> findUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      nameUser = preferences.getString(
-        'Name',
-      );
-      PhoneUser = preferences.getString(
-        'Phone',
-      );
-      addressUser = preferences.getString(
-        'Address',
-      );
-      urlPictrueUser = preferences.getString(
-        'UrlPictrue',
-      );
-    });
-  }
+//  Future<Null> findUser() async {
+//    SharedPreferences preferences = await SharedPreferences.getInstance();
+//    setState(() {
+//      nameUser = preferences.getString(
+//        'Name',
+//      );
+//      PhoneUser = preferences.getString(
+//        'Phone',
+//      );
+//      addressUser = preferences.getString(
+//        'Address',
+//      );
+//      urlPictrueUser = preferences.getString(
+//        'UrlPictrue',
+//      );
+//    });
+//  }
 
   //api เรียกดึงข้อูล room จากตาราง room_tb where id
   Future<Null> readMess() async {
@@ -120,6 +121,24 @@ class _ShowMessGroupState extends State<ShowMessGroup> {
                 child: ListTile(
                   title: Text('ผู้ใช้งาน ${groupModel.name}',style: GoogleFonts.sarabun(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),),
                   subtitle: Text('${groupModel.datetime}',style: GoogleFonts.sarabun()),
+                  leading: CachedNetworkImage(
+                    imageUrl: '${MyDomain().domain}${groupModel.urlPictrue}',
+                    imageBuilder: (context, imageProvider){
+                      return Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover
+                          ),
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(10)
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -127,7 +146,6 @@ class _ShowMessGroupState extends State<ShowMessGroup> {
           SingleChildScrollView(
             child: ListTile(
               title: Text('${groupModel.mMess}',style: GoogleFonts.sarabun(fontSize: 16,color: Colors.blueAccent.shade400),),
-
               //mainAxisAlignment: MainAxisAlignment.start,
               //children: <Widget>[
               //MyStyle().showTitle(roomModel.mMess),

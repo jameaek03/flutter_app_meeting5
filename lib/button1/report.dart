@@ -22,7 +22,7 @@ class _ReportState extends State<Report> {
   String Detail, r_name;
 
   RoomModel roomModel;
-  List<Widget> listWidgets = List();
+  //List<Widget> listWidgets = List();
   int indexPage = 0;
 
   @override

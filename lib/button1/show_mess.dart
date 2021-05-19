@@ -37,7 +37,7 @@ class _ShowMessState extends State<ShowMess> {
     rId = roomModel.rId;
     readMess();
     print(roomModel.rId.toString());
-    findUser();
+    //findUser();
   }
 
   @override
@@ -59,23 +59,23 @@ class _ShowMessState extends State<ShowMess> {
     );
   }
 
-  Future<Null> findUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      nameUser = preferences.getString(
-        'Name',
-      );
-      PhoneUser = preferences.getString(
-        'Phone',
-      );
-      addressUser = preferences.getString(
-        'Address',
-      );
-      urlPictrueUser = preferences.getString(
-        'UrlPictrue',
-      );
-    });
-  }
+//  Future<Null> findUser() async {
+//    SharedPreferences preferences = await SharedPreferences.getInstance();
+//    setState(() {
+//      nameUser = preferences.getString(
+//        'Name',
+//      );
+//      PhoneUser = preferences.getString(
+//        'Phone',
+//      );
+//      addressUser = preferences.getString(
+//        'Address',
+//      );
+//      urlPictrueUser = preferences.getString(
+//        'UrlPictrue',
+//      );
+//    });
+//  }
 
   //api เรียกดึงข้อูล room จากตาราง room_tb where id
   Future<Null> readMess() async {
@@ -89,7 +89,7 @@ class _ShowMessState extends State<ShowMess> {
     await Dio().get(url).then((value) {
       var result = json.decode(value.data);
 
-      print(result.toString());
+      //print(result.toString());
 
       int index = 0;
       for (var map in result) {
@@ -125,7 +125,7 @@ class _ShowMessState extends State<ShowMess> {
                   title: Text('ผู้ใช้งาน ${roomModel.name}',style: GoogleFonts.sarabun(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),),
                   subtitle: Text('${roomModel.datetime}',style: GoogleFonts.sarabun()),
                   leading: CachedNetworkImage(
-                      imageUrl: '${MyDomain().domain}${urlPictrueUser}',
+                      imageUrl: '${MyDomain().domain}${roomModel.urlPictrue}',
                     imageBuilder: (context, imageProvider){
                         return Container(
                           width: 50,

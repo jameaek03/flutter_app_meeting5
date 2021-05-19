@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_meeting/button3/my_room.dart';
 import 'package:flutter_app_meeting/model/room_model.dart';
-
 import 'package:flutter_app_meeting/utility/my_domain.dart';
 import 'package:flutter_app_meeting/utility/signout_process.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +27,7 @@ class _ProfileState extends State<Profile> {
     findUser();
   }
 
+  //SharedPreferences คือขุดข้อมูลของผู้ใช้มา คือการ getInstance
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {

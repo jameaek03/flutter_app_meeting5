@@ -1,5 +1,5 @@
 class MyDomain {
-  String domain = 'http://192.168.1.101';
+  String domain = 'http://10.1.0.196';
 
   MyDomain();
 }

@@ -143,8 +143,6 @@ class _GroupDetailState extends State<GroupDetail> {
                   ),
                 ],
               ),
-              SizedBox(height: 12,),
-              saveButton(),
             ],
           ),
         ),
@@ -152,22 +150,6 @@ class _GroupDetailState extends State<GroupDetail> {
     );
   }
 
-  Widget saveButton() {
-    return Container(
-      color: Colors.green,
-      width: 200,
-      child: RaisedButton.icon(
-        icon: Icon(
-          Icons.where_to_vote,
-          color: Colors.white,
-        ),
-        label: Text(
-          'เข้าร่วม',
-          style: GoogleFonts.sarabun(color: Colors.white),
-        ),
-      ),
-    );
-  }
 
   Future<Null> findLatLng() async {
     setState(() {

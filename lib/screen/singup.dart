@@ -161,7 +161,7 @@ class _SignUpState extends State<SignUp> {
               onChanged: (value) => Name = value.trim(),
               decoration: InputDecoration(
                 prefixIcon: Icon(
-                  Icons.face,
+                  Icons.person,
                   color: MyStyle().darColor,
                 ),
                 labelStyle: GoogleFonts.mcLaren(color: MyStyle().darColor),

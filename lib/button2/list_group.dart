@@ -46,7 +46,7 @@ class _GroupRoomState extends State<GroupRoom> {
             ),
           );
   }
-
+  // Dio คือ แพ็คเก็ตอินเตอร์เน็ต คือโปรโตรคอล
   //api เรียกดึงข้อูล room จากตาราง room_tb where id
   Future<Null> readRoom() async {
     String url = '${MyDomain().domain}/Meeting/getMroom.php?isAdd=true';
@@ -57,14 +57,14 @@ class _GroupRoomState extends State<GroupRoom> {
 
       int index = 0;
       for (var map in result) {
-        GroupModel model = GroupModel.fromJson(map);
+        GroupModel model = GroupModel.fromJson(map); //เอาค่า map ไปใส่ใน model
         // print('NameShop = ${model.nameShop}');
 
         String gName = model.gName;
-        if (gName.isNotEmpty) {
+        if (gName.isNotEmpty) { //isNotEmpty ถ้าไม่มีค่าว่าง
           setState(() {
             groupModels.add(model);
-            roomCards.add(createCard(model, index));
+            roomCards.add(createCard(model, index)); //จะเอาการ์ดแแดเข้าไปใน รูมการNf จะเป็นการ์ดแบบ Index
             index++;
           });
         }
@@ -97,7 +97,7 @@ class _GroupRoomState extends State<GroupRoom> {
                     height: 150.0,
                     child: Image.network(
                       '${MyDomain().domain}${groupModel.gImg}',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
